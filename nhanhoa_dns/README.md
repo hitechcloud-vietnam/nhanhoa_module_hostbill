@@ -116,3 +116,15 @@ The ZoneDNS API is **record-only**. It has **no** command for:
 
 MIT — see [`LICENSE`](LICENSE).
 Copyright (c) 2026 **HiTechCloud by Pho Tue SoftWare Solutions JSC**.
+
+## Security, privacy & support
+
+- Store `auth-user`, `auth-pwd` and `auth-id` only in the HostBill Server/App connection. Do not publish credentials or include them in screenshots or tickets.
+- Debug logging is opt-in and masks the API password, but request/response content can include domain names and DNS values. Restrict log access, enable it only for diagnosis and remove retained logs under your policy.
+- The REST routes require authentication and re-check service ownership. Review the HostBill User API exposure and service ownership configuration before enabling client access.
+- Check Test connection and confirm the domain is available to the reseller account. TTL is constrained to 300–86400 seconds; record renaming is handled as delete plus add. The provider API does not create/delete zones and does not provide reverse DNS or DNSSEC.
+- Before reporting a record issue, include the record type, sanitized name/value, requested TTL, timestamp and redacted API response. Never share credentials or private customer data. See [support](../SUPPORT.md) and [security reporting](../SECURITY.md).
+
+## Brand & license
+
+This module belongs to **HiTechCloud Nhan Hoa Suite**. Nhân Hòa and HostBill names belong to their respective owners; no endorsement is implied. See [brand guidance](../BRAND.md) and the [MIT license](LICENSE).

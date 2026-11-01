@@ -1,0 +1,117 @@
+name: Publish module packages
+
+on:
+  push:
+    tags:
+      - 'nhanhoa_*-v*'
+  workflow_dispatch:
+    inputs:
+      module:
+        description: Module to package and publish
+        required: true
+        type: choice
+        options:
+          - nhanhoa_cloud
+          - nhanhoa_dns
+          - nhanhoa_domain
+          - nhanhoa_email
+          - nhanhoa_hosting
+          - nhanhoa_ssl
+      version:
+        description: Release version (for example 1.0.0)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-module-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Resolve module and version
+        id: release
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref_name }}
+          INPUT_MODULE: ${{ inputs.module }}
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            module="$INPUT_MODULE"
+            version="$INPUT_VERSION"
+          else
+            tag="$REF_NAME"
+            module=""
+            for candidate in nhanhoa_cloud nhanhoa_dns nhanhoa_domain nhanhoa_email nhanhoa_hosting nhanhoa_ssl; do
+              if [[ "$tag" == "$candidate-v"* ]]; then
+                module="$candidate"
+                break
+              fi
+            done
+            if [[ -z "$module" ]]; then
+              printf 'Tag does not identify a supported module: %s\n' "$tag" >&2
+              exit 1
+            fi
+            version="${tag#"$module-v"}"
+          fi
+
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            printf 'Invalid release version: %s\n' "$version" >&2
+            exit 1
+          fi
+
+          tag="$module-v$version"
+          printf 'module=%s\nversion=%s\ntag=%s\n' "$module" "$version" "$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Build and verify installable ZIP
+        env:
+          MODULE: ${{ steps.release.outputs.module }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: bash scripts/package-module.sh "$MODULE" "$VERSION" dist
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MODULE: ${{ steps.release.outputs.module }}
+          VERSION: ${{ steps.release.outputs.version }}
+          TAG: ${{ steps.release.outputs.tag }}
+          TARGET_SHA: ${{ github.sha }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="dist/$MODULE-$VERSION.zip"
+          checksum="$archive.sha256"
+          notes="$RUNNER_TEMP/release-notes.md"
+
+          cat > "$notes" <<EOF
+          ## Install
+
+          Extract this archive from the HostBill installation root. The ZIP contains the module under its HostBill path.
+
+          SHA-256: see the accompanying \
+          \`$MODULE-$VERSION.zip.sha256\` file.
+
+          See the module README inside the archive for configuration and provider API limitations.
+          EOF
+
+          if gh release view "$TAG" --repo "$REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$archive" "$checksum" --repo "$REPOSITORY" --clobber
+          else
+            gh release create "$TAG" "$archive" "$checksum" \
+              --repo "$REPOSITORY" \
+              --title "$MODULE $VERSION" \
+              --notes-file "$notes" \
+              --target "$TARGET_SHA"
+          fi

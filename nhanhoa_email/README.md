@@ -126,3 +126,15 @@ lapses at `ord_end_time`).
 ## License & author
 
 MIT — see `LICENSE`. © 2026 **HiTechCloud by Pho Tue SoftWare Solutions JSC**.
+
+## Security, privacy & support
+
+- Keep the reseller username, API password and reseller ID in the HostBill Server/App fields. Never include these values, mailbox passwords or customer data in a public report.
+- Debug logging masks the API password but may contain domains, order identifiers and provider responses. Enable it temporarily, restrict access and remove logs when troubleshooting is complete.
+- Confirm the product code and a term of at least 6 months. `register_email` may require a later sync before the order ID/status is populated; verify the order with the provider before taking billing or lifecycle action.
+- The daily sync task depends on HostBill cron (`bin/cron.php`). If status or expiry stops refreshing, check that cron runs, review the task result and verify API availability. The API does not manage mailboxes, suspend mail service, change passwords or perform termination; use the Nhân Hòa panel for those actions.
+- When asking for help, include module/HostBill/PHP versions, sanitized order/domain identifiers, cron timestamp and redacted error output. Follow [support](../SUPPORT.md) and [security reporting](../SECURITY.md); use the provider's channel for mailbox or upstream order issues.
+
+## Brand & license
+
+This module is part of **HiTechCloud Nhan Hoa Suite**. Nhân Hòa and HostBill are third-party names/trademarks; no endorsement is implied. See [brand guidance](../BRAND.md) and the [MIT license](LICENSE).

@@ -142,3 +142,16 @@ LICENSE                                        MIT
 ## License & author
 
 MIT — see `LICENSE`. © 2026 **HiTechCloud by Pho Tue SoftWare Solutions JSC**.
+
+## Security, privacy & support
+
+- Keep `auth-user`, `auth-pwd` and `auth-id` in the HostBill Server/App configuration; never put them in product descriptions, support screenshots or public logs.
+- The optional API debug log masks credentials, but request/response data may still contain service identifiers, IP addresses or customer data. Enable it only while diagnosing, restrict file access and remove it according to your retention policy.
+- Client REST handlers require authentication and verify that the requesting client owns the service. They return a limited service summary rather than reseller credentials.
+- Check **Test connection** first. If creation returns before `cloud_id` is available, use **Sync status** after Nhân Hòa has completed order processing; this lookup is best-effort. Confirm the final order in the Nhân Hòa portal.
+- Verify `vpscode`, OS type/template and a term of at least 3 months. Power, reinstall, console, suspend, terminate and resize/password changes are not performed by this API; use the provider panel where available.
+- For an issue, include module/HostBill/PHP versions, the sanitized action and timestamp, product option names, and redacted error text. Do not send reseller credentials or customer secrets. General reporting and escalation guidance: [repository support](../SUPPORT.md) and [security reporting](../SECURITY.md).
+
+## Brand & license
+
+This module is part of **HiTechCloud Nhan Hoa Suite**, maintained under the attribution shown above. Nhân Hòa and HostBill are respective third-party names/trademarks; this integration does not imply endorsement. See [brand guidance](../BRAND.md) and the [MIT license](LICENSE).
