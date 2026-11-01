@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Nhan Hoa Domain — reseller API transport (HTTP/cURL).
+ *
+ * @package   HiTechCloud Nhan Hoa Suite
+ * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @license   MIT
+ * @version   1.0.0
+ */
+
+/**
  * Transport for the Nhan Hoa reseller API (https://api.nhanhoa.com/).
  *
  * Documented at https://docs.nhanhoa.com/. Every call is an HTTP POST to

@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * Nhan Hoa Domain — Eloquent model for mirrored registrant contacts.
+ *
+ * @package   HiTechCloud Nhan Hoa Suite
+ * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @license   MIT
+ * @version   1.0.0
+ */
+
 namespace Domain\nhanhoa_domain\ORM;
 
 use Illuminate\Database\Eloquent\Model as ORM_Model;

@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Nhan Hoa Domain — contract / e-signature client widget.
+ *
+ * @package   HiTechCloud Nhan Hoa Suite
+ * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @license   MIT
+ * @version   1.0.0
+ */
+
+/**
  * Bản khai / e-signature link for a Nhan Hoa domain.
  *
  * Calls nhanhoa_domain::Contract(), which returns the registrar's sign URL.

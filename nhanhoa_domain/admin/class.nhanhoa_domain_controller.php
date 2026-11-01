@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Nhan Hoa Domain — admin-area controller.
+ *
+ * @package   HiTechCloud Nhan Hoa Suite
+ * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @license   MIT
+ * @version   1.0.0
+ */
+
+/**
  * Admin-area controller for nhanhoa_domain.
  *
  * Reached as `?cmd=nhanhoa_domain&action=<method>`; the buttons in

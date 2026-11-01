@@ -1,0 +1,56 @@
+{
+    "file": "includes/modules/Hosting/nhanhoa_email/api/class.nhanhoa_email_apiroutes.php",
+    "class": "nhanhoa_email_apiroutes",
+    "name": "NhanHoaEmail",
+    "description": "REST routes for a Nhan Hoa Email Hosting reseller service: order info and sync",
+    "category": [
+        {
+            "name": "NhanHoaEmail",
+            "description": "Nhan Hoa Email Hosting services"
+        }
+    ],
+    "route": {
+        "GET /service/@id/nhemail/info": {
+            "name": "Email Hosting order info",
+            "description": "Domain, plan code, order id, expiry date and the Nhan Hoa control panel URL for this service",
+            "param": [
+                {
+                    "type": "int",
+                    "name": "id",
+                    "description": "HiTechCloud service ID",
+                    "inurl": true,
+                    "required": true
+                }
+            ],
+            "route": "GET /service/@id/nhemail/info",
+            "auth": true,
+            "handle": "info",
+            "uuid": "33fe3025-1169-4b4a-a1f2-fa1345855ff6",
+            "priority": 10,
+            "category": "NhanHoaEmail",
+            "http": "GET",
+            "address": "/service/@id/nhemail/info"
+        },
+        "GET /service/@id/nhemail/sync": {
+            "name": "Sync Email Hosting order",
+            "description": "Re-read the live order state from Nhan Hoa (rate-limited) and return the refreshed summary",
+            "param": [
+                {
+                    "type": "int",
+                    "name": "id",
+                    "description": "HiTechCloud service ID",
+                    "inurl": true,
+                    "required": true
+                }
+            ],
+            "route": "GET /service/@id/nhemail/sync",
+            "auth": true,
+            "handle": "sync",
+            "uuid": "f191536f-ffa4-4b48-b920-f1a26455201c",
+            "priority": 10,
+            "category": "NhanHoaEmail",
+            "http": "GET",
+            "address": "/service/@id/nhemail/sync"
+        }
+    }
+}

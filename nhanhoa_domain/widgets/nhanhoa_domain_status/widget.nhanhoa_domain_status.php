@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Nhan Hoa Domain — order-processing status client widget.
+ *
+ * @package   HiTechCloud Nhan Hoa Suite
+ * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @license   MIT
+ * @version   1.0.0
+ */
+
+/**
  * Registrar-side processing state for the domain order.
  *
  * v2 called the registrar on every client-area render. This one only calls on

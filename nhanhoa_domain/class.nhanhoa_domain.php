@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Nhan Hoa Domain — standalone .vn / international domain registrar module.
+ *
+ * @package   HiTechCloud Nhan Hoa Suite
+ * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @license   MIT
+ * @version   1.0.0
+ */
+
+/**
  * Nhan Hoa (Nhân Hòa) registrar module — nhanhoa_domain.
  *
  * Talks to the Nhan Hoa reseller API (https://api.nhanhoa.com/, documented at
@@ -35,10 +45,14 @@
  *   - listUnsignedDomains() — domains still missing their bản khai.
  *   - getAdministrativeDivisions() as a read-only registry reference.
  *
- * Administrative divisions: the registrar docs still list the pre-merger
- * provinces. This module's own mapping (state = tỉnh/thành, city = quận/huyện,
- * ward = phường/xã, plus formatCityName()) is the current one and is carried
- * over verbatim — do not "correct" it against docs.nhanhoa.com.
+ * Administrative divisions (2025 reform — 2-tier addresses):
+ *   Vietnam's 2025 administrative reform (sắp xếp đơn vị hành chính) ABOLISHED
+ *   the district (quận/huyện) tier. Addresses are now two tiers —
+ *   Tỉnh/Thành phố (province/city) → Xã/Phường (ward/commune) — directly, with
+ *   no district in between. This module therefore treats province + ward as the
+ *   primary address tiers and the district tier as OPTIONAL/legacy. See the
+ *   "CONVERSION NOTE" block above makeContact() for the full mapping and the
+ *   backward-compatibility rules. See also README.md → "Địa danh 2-tier".
  */
 
 use Domain\nhanhoa_domain\ORM\ORM_domcontacts as DContacts;
@@ -539,12 +553,49 @@ class nhanhoa_domain extends DomainModule implements
     }
 
     /**
-     * Build the registrar's contact fields from HostBill's contact arrays.
+     * ═══════════════════════════════════════════════════════════════════════
+     * CONVERSION NOTE — Vietnam 2025 administrative reform (3-tier → 2-tier)
+     * ═══════════════════════════════════════════════════════════════════════
+     * Vietnam's 2025 reform (sắp xếp đơn vị hành chính) ABOLISHED the district
+     * (quận/huyện) tier. Addresses are now:
      *
-     * Field mapping — unchanged from v2 and deliberately so:
-     *   HostBill state → ownerCity      (tỉnh / thành phố)
-     *   HostBill city  → ownerDistrict  (quận / huyện)
-     *   HostBill ward  → ownerTown      (phường / xã)
+     *     Tỉnh / Thành phố (province/city)  →  Xã / Phường (ward/commune)
+     *
+     * i.e. the ward/commune now sits DIRECTLY under the province/city, with no
+     * district in between.
+     *
+     * Field mapping (HostBill contact → Nhan Hoa registrar payload):
+     *   HostBill state → ownerCity      (tỉnh / thành phố)   — PRIMARY
+     *   HostBill ward  → ownerTown      (phường / xã)        — PRIMARY (now)
+     *   HostBill city  → ownerDistrict  (quận / huyện)       — LEGACY / optional
+     *
+     * What changed here vs. the old 3-tier mapping:
+     *   - province + ward are the primary tiers; a district is NO LONGER required
+     *     for a new registration.
+     *   - ownerDistrict is still DOCUMENTED as a required field by the registrar
+     *     (domainvn.md marks ownerDistrict √; ownerTown is optional). Because the
+     *     live API may still reject an empty ownerDistrict, it is populated
+     *     DEFENSIVELY: the stored legacy district is used when present, otherwise
+     *     it falls back to the ward value so the required field is never empty.
+     *     (Live acceptance of a ward value / empty value in the district slot
+     *     could not be verified offline — see README.md → "Địa danh 2-tier".)
+     *
+     * How existing stored 3-tier addresses map to the new model:
+     *   - a contact saved before the reform still carries its district in the
+     *     HostBill "city" field; that value is kept and sent as ownerDistrict, so
+     *     nothing breaks (backward compatible).
+     *   - new 2-tier contacts have an empty "city" (district); the ward is sent
+     *     as both ownerTown and the defensive ownerDistrict.
+     *   - ADMINS SHOULD re-verify stored registrant addresses after migrating to
+     *     the new division list (drop the obsolete district, keep the ward under
+     *     its province/city).
+     *
+     * list_district is retained only as a LEGACY lookup (see
+     * getAdministrativeDivisions()); the registrar exposes no province→ward
+     * direct listing.
+     * ═══════════════════════════════════════════════════════════════════════
+     *
+     * Build the registrar's contact fields from HostBill's contact arrays.
      */
     protected function makeContact($type = 'registrant', $cdata = false)
     {
@@ -585,10 +636,18 @@ class nhanhoa_domain extends DomainModule implements
                 $formdata[$prefix . 'Name'] = trim(($c['lastname'] ?? '') . ' ' . ($c['firstname'] ?? ''));
             }
 
+            // 2-tier address (2025 reform): province (City) + ward (Town) are the
+            // primary tiers; district is legacy. See the CONVERSION NOTE above.
+            $ward        = $c['ward'] ?? '';
+            $legacyDist  = $c['city'] ?? ''; // HostBill "city" held the old quận/huyện
+
             $formdata[$prefix . 'Address']  = $c['address1'] ?? '';
-            $formdata[$prefix . 'Town']     = $c['ward'] ?? '';
-            $formdata[$prefix . 'District'] = $c['city'] ?? '';
-            $formdata[$prefix . 'City']     = $c['state'] ?? '';
+            $formdata[$prefix . 'Town']     = $ward;              // phường / xã (primary)
+            // ownerDistrict is still marked required by the registrar API even
+            // though the district tier was abolished; populate it defensively so
+            // new 2-tier addresses (no district) are still accepted.
+            $formdata[$prefix . 'District'] = $legacyDist !== '' ? $legacyDist : $ward;
+            $formdata[$prefix . 'City']     = $c['state'] ?? '';  // tỉnh / thành (primary)
             $formdata[$prefix . 'Country']  = ($c['country'] ?? '') === 'VN' ? 'Vietnam' : ($c['country'] ?? '');
             $formdata[$prefix . 'Email']    = $c['email'] ?? '';
             $formdata[$prefix . 'Gender']   = $c['gender'] ?? '';
@@ -1873,21 +1932,33 @@ class nhanhoa_domain extends DomainModule implements
     }
 
     /**
-     * Registry list of provinces / districts / countries.
+     * Registry list of countries / provinces / districts / wards.
      *
      * Read-only reference for admins comparing an order against what the
-     * registrar will accept. NOT used to rewrite contact data: the registrar's
-     * list still carries the pre-merger names, this module's does not.
+     * registrar will accept. NOT used to rewrite contact data.
      *
-     * @param string $level  province|district|country
-     * @param string $parent cityId when asking for districts
+     * 2025 reform note: the district tier is abolished for new addresses (see the
+     * CONVERSION NOTE on makeContact()). The registrar exposes NO province→ward
+     * direct listing, so `list_district` is kept purely as a LEGACY lookup, and
+     * the 'ward' level below is a legacy, district-chained lookup:
+     *   - 'district' lists quận/huyện under a province  (parent = cityId)
+     *   - 'ward'     lists phường/xã  under a district  (parent = districtId)
+     * diadanh.md documents the ward listing keyed by `districtId`; the `cmd`
+     * shown in that doc section is `list_district` (a copy/paste artifact — the
+     * distinguishing input is the parent id). The exact ward cmd name could not
+     * be verified offline; see README.md → "Địa danh 2-tier".
+     *
+     * @param string $level  country|province|district|ward
+     * @param string $parent cityId (for district) or districtId (for ward)
      */
     public function getAdministrativeDivisions($level = 'province', $parent = '')
     {
         $cmds = [
-            'province' => 'list_province',
-            'district' => 'list_district',
-            'country'  => 'list_country',
+            'country'  => ['cmd' => 'list_country',  'parentKey' => null],
+            'province' => ['cmd' => 'list_province', 'parentKey' => null],
+            'district' => ['cmd' => 'list_district', 'parentKey' => 'cityId'],
+            // Legacy: ward/commune under a district id (see note above).
+            'ward'     => ['cmd' => 'list_district', 'parentKey' => 'districtId'],
         ];
 
         if (!isset($cmds[$level])) {
@@ -1895,8 +1966,13 @@ class nhanhoa_domain extends DomainModule implements
             return false;
         }
 
-        $formdata = $parent !== '' ? ['cityId' => $parent] : [];
-        $result   = $this->get($cmds[$level], $formdata);
+        $spec     = $cmds[$level];
+        $formdata = [];
+        if ($spec['parentKey'] !== null && $parent !== '') {
+            $formdata[$spec['parentKey']] = $parent;
+        }
+
+        $result = $this->get($spec['cmd'], $formdata);
 
         if (!Nhanhoa_Domain_Api::ok($result)) {
             $this->addError(Nhanhoa_Domain_Api::msg($result));

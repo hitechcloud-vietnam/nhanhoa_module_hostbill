@@ -1,0 +1,44 @@
+{
+    "file": "includes/modules/Hosting/nhanhoa_ssl/api/class.nhanhoa_ssl_apiroutes.php",
+    "class": "nhanhoa_ssl_apiroutes",
+    "name": "Nhan Hoa SSL",
+    "description": "REST routes a client can drive for a Nhan Hoa SSL certificate service: read-only certificate status and the validation methods the product supports",
+    "category": [
+        {
+            "name": "Nhan Hoa SSL",
+            "description": "Nhan Hoa (Nhân Hòa) SSL certificates resold through this installation"
+        }
+    ],
+    "route": {
+        "GET /service/@id/nhanhoa_ssl/status": {
+            "name": "Certificate Status",
+            "description": "Synchronize and return the certificate order status for the service",
+            "param": [
+                {"type": "int", "name": "id", "description": "HostBill service ID", "inurl": true, "required": true}
+            ],
+            "route": "GET /service/@id/nhanhoa_ssl/status",
+            "auth": true,
+            "handle": "status",
+            "uuid": "9a4e0001-bb04-4c04-9e04-000000000001",
+            "priority": 10,
+            "category": "Nhan Hoa SSL",
+            "http": "GET",
+            "address": "/service/@id/nhanhoa_ssl/status"
+        },
+        "GET /service/@id/nhanhoa_ssl/dcv-methods": {
+            "name": "Supported DCV Methods",
+            "description": "Domain Control Validation methods this certificate product nominally supports (validation is completed in the Nhan Hoa portal)",
+            "param": [
+                {"type": "int", "name": "id", "description": "HostBill service ID", "inurl": true, "required": true}
+            ],
+            "route": "GET /service/@id/nhanhoa_ssl/dcv-methods",
+            "auth": true,
+            "handle": "dcvMethods",
+            "uuid": "9a4e0002-bb04-4c04-9e04-000000000002",
+            "priority": 20,
+            "category": "Nhan Hoa SSL",
+            "http": "GET",
+            "address": "/service/@id/nhanhoa_ssl/dcv-methods"
+        }
+    }
+}

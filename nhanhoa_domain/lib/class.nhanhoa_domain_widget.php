@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Nhan Hoa Domain — shared base for the client-area widgets.
+ *
+ * @package   HiTechCloud Nhan Hoa Suite
+ * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @license   MIT
+ * @version   1.0.0
+ */
+
+/**
  * Shared base for the nhanhoa_domain client-area widgets.
  *
  * Follows the shape HostBill's own domain widgets use (see

@@ -1,0 +1,56 @@
+{
+    "file": "includes/modules/Hosting/nhanhoa_hosting/api/class.nhanhoa_hosting_apiroutes.php",
+    "class": "nhanhoa_hosting_apiroutes",
+    "name": "NhanHoaHosting",
+    "description": "REST routes for a Nhan Hoa reseller hosting service: order info and live status",
+    "category": [
+        {
+            "name": "NhanHoaHosting",
+            "description": "Nhan Hoa reseller hosting services"
+        }
+    ],
+    "route": {
+        "GET /service/@id/nhanhoa/info": {
+            "name": "Hosting order info",
+            "description": "Domain, plan code, order id/name, status and expiry for this service",
+            "param": [
+                {
+                    "type": "int",
+                    "name": "id",
+                    "description": "HostBill service ID",
+                    "inurl": true,
+                    "required": true
+                }
+            ],
+            "route": "GET /service/@id/nhanhoa/info",
+            "auth": true,
+            "handle": "info",
+            "uuid": "b1f0c3a2-7d4e-4a19-9c2b-1e6f0a8d55c1",
+            "priority": 10,
+            "category": "NhanHoaHosting",
+            "http": "GET",
+            "address": "/service/@id/nhanhoa/info"
+        },
+        "GET /service/@id/nhanhoa/status": {
+            "name": "Hosting order status",
+            "description": "Live HostBill-mapped status of the hosting order",
+            "param": [
+                {
+                    "type": "int",
+                    "name": "id",
+                    "description": "HostBill service ID",
+                    "inurl": true,
+                    "required": true
+                }
+            ],
+            "route": "GET /service/@id/nhanhoa/status",
+            "auth": true,
+            "handle": "status",
+            "uuid": "c2a1d4b3-8e5f-4b2a-8d3c-2f70b9ce66d2",
+            "priority": 10,
+            "category": "NhanHoaHosting",
+            "http": "GET",
+            "address": "/service/@id/nhanhoa/status"
+        }
+    }
+}

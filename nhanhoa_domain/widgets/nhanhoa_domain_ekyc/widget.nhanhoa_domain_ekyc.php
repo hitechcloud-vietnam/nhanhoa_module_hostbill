@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Nhan Hoa Domain — eKYC client widget.
+ *
+ * @package   HiTechCloud Nhan Hoa Suite
+ * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @license   MIT
+ * @version   1.0.0
+ */
+
+/**
  * eKYC link for a .vn registrant.
  *
  * nhanhoa_domain::getekyc() refuses international domains itself and records the

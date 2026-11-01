@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Nhan Hoa Domain — registrant profile client widget.
+ *
+ * @package   HiTechCloud Nhan Hoa Suite
+ * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
+ * @license   MIT
+ * @version   1.0.0
+ */
+
+/**
  * Registrant profile as the registrar holds it: contacts, bản khai state and
  * order-processing state in one panel.
  *

@@ -1,0 +1,91 @@
+{
+    "file": "includes/modules/Hosting/nhanhoa_cloud/api/class.nhanhoa_cloud_apiroutes.php",
+    "class": "nhanhoa_cloud_apiroutes",
+    "name": "Nhan Hoa Cloud VPS",
+    "description": "Client-facing REST routes for a Nhan Hoa (Nhân Hòa) Cloud VPS service: read identifiers, live status, and control actions (power/reinstall/console are managed in the Nhan Hoa panel).",
+    "category": [
+        {
+            "name": "Nhan Hoa Cloud VPS",
+            "description": "Nhân Hòa Cloud VPS resold through this installation"
+        }
+    ],
+    "route": {
+        "GET /service/@id/nhanhoa_cloud/info": {
+            "name": "Service Info",
+            "description": "Stored Cloud VPS identifiers (cloud id, order, plan, IP, status, expiry). Credentials are never returned.",
+            "param": [
+                {"type": "int", "name": "id", "description": "HostBill service ID", "inurl": true, "required": true}
+            ],
+            "route": "GET /service/@id/nhanhoa_cloud/info",
+            "auth": true,
+            "handle": "info",
+            "uuid": "9e36f9d2-0f32-40f5-b0db-c7ab3f27b3ca",
+            "priority": 10,
+            "category": "Nhan Hoa Cloud VPS",
+            "http": "GET",
+            "address": "/service/@id/nhanhoa_cloud/info"
+        },
+        "GET /service/@id/nhanhoa_cloud/status": {
+            "name": "Service Status",
+            "description": "Live status/expiry pulled from Nhan Hoa (get_infocloud) and mapped to a HostBill status.",
+            "param": [
+                {"type": "int", "name": "id", "description": "HostBill service ID", "inurl": true, "required": true}
+            ],
+            "route": "GET /service/@id/nhanhoa_cloud/status",
+            "auth": true,
+            "handle": "status",
+            "uuid": "555f413e-89f1-41cd-8d2b-89e9e97d7ce4",
+            "priority": 10,
+            "category": "Nhan Hoa Cloud VPS",
+            "http": "GET",
+            "address": "/service/@id/nhanhoa_cloud/status"
+        },
+        "POST /service/@id/nhanhoa_cloud/power/@action": {
+            "name": "Power Control",
+            "description": "Power action (start/stop/reboot). The Nhan Hoa Cloud API has no power command; returns a panel-managed notice.",
+            "param": [
+                {"type": "int", "name": "id", "description": "HostBill service ID", "inurl": true, "required": true},
+                {"type": "string", "name": "action", "description": "start | stop | reboot", "inurl": true, "required": true}
+            ],
+            "route": "POST /service/@id/nhanhoa_cloud/power/@action",
+            "auth": true,
+            "handle": "power",
+            "uuid": "a7010247-82bf-4f42-9c6c-ae89618ab70b",
+            "priority": 10,
+            "category": "Nhan Hoa Cloud VPS",
+            "http": "POST",
+            "address": "/service/@id/nhanhoa_cloud/power/@action"
+        },
+        "POST /service/@id/nhanhoa_cloud/reinstall": {
+            "name": "Reinstall OS",
+            "description": "Rebuild/reinstall OS. The Nhan Hoa Cloud API has no reinstall command; returns a panel-managed notice.",
+            "param": [
+                {"type": "int", "name": "id", "description": "HostBill service ID", "inurl": true, "required": true},
+                {"type": "string", "name": "os", "description": "OS template code", "inurl": false, "required": false}
+            ],
+            "route": "POST /service/@id/nhanhoa_cloud/reinstall",
+            "auth": true,
+            "handle": "reinstall",
+            "uuid": "da350027-328c-473f-84db-185f11091fad",
+            "priority": 10,
+            "category": "Nhan Hoa Cloud VPS",
+            "http": "POST",
+            "address": "/service/@id/nhanhoa_cloud/reinstall"
+        },
+        "GET /service/@id/nhanhoa_cloud/console": {
+            "name": "Console / VNC",
+            "description": "Returns the Nhan Hoa panel deep link for console/VNC access (the API exposes no console command).",
+            "param": [
+                {"type": "int", "name": "id", "description": "HostBill service ID", "inurl": true, "required": true}
+            ],
+            "route": "GET /service/@id/nhanhoa_cloud/console",
+            "auth": true,
+            "handle": "console",
+            "uuid": "2ad214ae-7e81-40d7-b1ad-9fafabf85f21",
+            "priority": 10,
+            "category": "Nhan Hoa Cloud VPS",
+            "http": "GET",
+            "address": "/service/@id/nhanhoa_cloud/console"
+        }
+    }
+}
