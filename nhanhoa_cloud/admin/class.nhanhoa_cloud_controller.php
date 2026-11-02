@@ -30,6 +30,7 @@ class nhanhoa_cloud_Controller extends HBController
         $this->adminareatpl = $typetemplates["adminaccounts"]["details"]["replace"];
         $this->template->assign("typetemplates", $typetemplates);
         $this->template->assign("moduletpldir", $adminarea);
+        $this->template->assign("nh_admin_css", $this->adminCssUrl());
 
         if (isset($params["vpsdo"]) && is_callable([$this, "vpsdo_" . $params["vpsdo"]])) {
             $this->setupModule($params["id"]);
@@ -67,6 +68,17 @@ class nhanhoa_cloud_Controller extends HBController
         $this->template->assign("customconfig", $adminarea . "productconfig.tpl");
         $this->template->assign("module_templates", $adminarea);
         $this->template->assign("modulename", strtolower($this->module->getModuleName()));
+        $this->template->assign("nh_admin_css", $this->adminCssUrl());
+    }
+
+    /** Absolute URL to this module's admin stylesheet (WebNIC re-skin). */
+    protected function adminCssUrl()
+    {
+        return Utilities::checkSecureURL(
+            HBConfig::getConfig("InstallURL")
+            . "includes/modules/" . $this->module->getModuleType() . "/"
+            . strtolower($this->module->getModuleName()) . "/admin/styles.css"
+        );
     }
 
     /** Connect the module to the server + account behind a service id. */

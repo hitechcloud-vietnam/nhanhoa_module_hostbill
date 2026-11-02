@@ -37,14 +37,14 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.0.2026-11-02
+ * @version   1.1.0
  */
 
 #[\AllowDynamicProperties]
 class nhanhoa_cloud extends HostingModule
 {
     protected $_repository = "hosting_nhanhoa_cloud";
-    protected $version     = "1.0.2026-11-02";
+    protected $version     = "1.1.0";
     protected $modname     = "Nhan Hoa Cloud VPS";
     protected $description = "Nhân Hòa Cloud VPS provisioning (reseller API)";
 
