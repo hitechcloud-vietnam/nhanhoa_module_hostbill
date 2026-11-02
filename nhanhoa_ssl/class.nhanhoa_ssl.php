@@ -7,7 +7,7 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.0.0
+ * @version   1.1.0
  */
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'class.nhanhoa_ssl_api.php';
@@ -56,7 +56,7 @@ class nhanhoa_ssl extends SSLModule
      */
     protected $info = ["haveuser" => true, "haveadmin" => true, "havetpl" => true, "haveapi" => true];
 
-    protected $version = '1.0.0';
+    protected $version = '1.1.0';
     protected $_repository = 'hosting_nhanhoa_ssl';
     protected $modname = 'Nhan Hoa SSL';
     protected $description = 'Nhan Hoa (Nhân Hòa) SSL provisioning module for HostBill by Pho Tue SoftWare Solutions JSC';

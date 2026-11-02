@@ -63,6 +63,7 @@ class nhanhoa_ssl_Controller extends HBController
     public function accountdetails($params)
     {
         $this->template->assign('custom_template', __DIR__ . DS . 'myadminarea.tpl');
+        $this->template->assign('moduleurl', Utilities::checkSecureURL(HBConfig::getConfig('InstallURL') . 'includes/modules/Hosting/nhanhoa_ssl/admin/'));
 
         if (isset($params['sync']) && $this->setupModule($params['id'])) {
             $sync = $this->module->getSynchInfo();
