@@ -1,4 +1,4 @@
-{* Nhan Hoa Hosting service-summary widget. *}
+{* Nhan Hoa Hosting service-summary widget — WebNIC widget look (.wbox + striped table). *}
 <div class="wbox">
     <div class="wbox_header">Nhân Hòa Hosting</div>
     <div class="wbox_content">
@@ -6,7 +6,7 @@
             <div class="alert alert-danger">{$nhw_error|escape}</div>
         {/if}
 
-        <table cellspacing="0" width="100%" class="data-table table table-striped">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%" class="checker table table-striped">
             <tbody>
                 <tr><td style="width:45%"><strong>Tên miền</strong></td><td>{$nhw_domain|default:'—'|escape}</td></tr>
                 <tr><td><strong>Mã gói</strong></td><td>{if $nhw_code}<code>{$nhw_code|escape}</code>{else}—{/if}</td></tr>
@@ -18,7 +18,7 @@
 
         {if $nhw_used}
             <h3 class="summarize">Dịch vụ đang dùng</h3>
-            <table cellspacing="0" width="100%" class="data-table table table-striped">
+            <table cellspacing="0" cellpadding="0" border="0" width="100%" class="checker table table-striped">
                 <tbody>
                     {foreach from=$nhw_used item=grp}
                         <tr>
@@ -31,8 +31,8 @@
         {/if}
 
         {if $nhw_panel}
-            <p style="margin-top:10px">
-                <a href="{$nhw_panel|escape}" target="_blank" rel="noopener noreferrer" class="btn btn-default btn-sm">Control panel Nhân Hòa</a>
+            <p style="margin:10px 0 0; text-align:center;">
+                <a href="{$nhw_panel|escape}" target="_blank" rel="noopener noreferrer" class="padded btn btn-primary">Control panel Nhân Hòa</a>
             </p>
         {/if}
     </div>

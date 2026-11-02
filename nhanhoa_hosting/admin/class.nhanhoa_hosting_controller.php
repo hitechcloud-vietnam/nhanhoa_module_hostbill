@@ -43,6 +43,7 @@ class nhanhoa_hosting_controller extends HBController
 
         $this->template->assign('customconfig', $dir . 'productconfig.tpl');
         $this->template->assign('module_templates', $dir);
+        $this->template->assign('nh_admin_css', $this->adminCssUrl());
 
         // The server is picked on the form, so the module is not connected yet.
         if (!empty($params['server_id'])) {
@@ -91,6 +92,7 @@ class nhanhoa_hosting_controller extends HBController
         $path      = $this->templatePath('adminarea', 'account.tpl');
 
         $this->template->assign('custom_template', $path);
+        $this->template->assign('nh_admin_css', $this->adminCssUrl());
 
         $typetemplates = $this->template->getTemplateVars('typetemplates');
 
@@ -153,6 +155,16 @@ class nhanhoa_hosting_controller extends HBController
         $this->template->assign('nh_months', $this->module->hostingMonths());
         $this->template->assign('nh_cp_url', $this->module->controlPanelUrl());
         $this->template->assign('module_error', (array) $this->module->getLastError());
+    }
+
+    /** Absolute URL to this module's admin stylesheet (WebNIC re-skin). */
+    protected function adminCssUrl()
+    {
+        return Utilities::checkSecureURL(
+            HBConfig::getConfig('InstallURL')
+            . 'includes/modules/Hosting/' . strtolower($this->module->getModuleName())
+            . '/templates/adminarea/styles.css'
+        );
     }
 
     protected function templatePath($area, $file)

@@ -35,7 +35,7 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.0.0
+ * @version   1.1.0
  */
 
 if (!defined('MAINDIR')) {
@@ -55,7 +55,7 @@ class nhanhoa_hosting extends HostingModule
     const D_CODE     = 'option5';   // Nhan Hoa service (plan) code
     const D_ORDID    = 'option6';   // Nhan Hoa order id, used by renew/get_info
 
-    protected $version = '1.0.0';
+    protected $version = '1.1.0';
 
     protected $modname = 'Nhân Hòa Hosting';
 
