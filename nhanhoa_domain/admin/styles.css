@@ -1,0 +1,10 @@
+/* nhanhoa_domain admin styles */
+.nhanhoa-domain-panel { max-width: 760px; }
+#nh-domreq-details { margin: 10px 0; }
+#nh-domreq-details .btn { margin: 2px 2px 6px 0; }
+#nh-domain-primary, #nh-domain-secondary { margin-top: 12px; }
+.nhanhoa-domain-action-result { padding: 8px 0; }
+ul.accor { list-style: none; margin: 0; padding: 0; }
+ul.accor > li { margin-bottom: 10px; }
+ul.accor .sor .row { margin-bottom: 10px; }
+ul.accor .sor pre { white-space: pre-wrap; max-height: 320px; overflow: auto; }

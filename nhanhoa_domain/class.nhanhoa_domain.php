@@ -7,7 +7,7 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.0.0
+ * @version   1.1.0
  */
 
 /**
@@ -79,7 +79,7 @@ class nhanhoa_domain extends DomainModule implements
     /** TTL Nhan Hoa applies when a record does not carry one. */
     const DEFAULT_TTL = 300;
 
-    protected $version = '1.0.0';
+    protected $version = '1.1.0';
 
     protected $modname = 'Nhan Hoa Domain';
 
