@@ -1,0 +1,11 @@
+/* nhanhoa_dns admin styles.
+   Adapted from Domain/webnic_domain/admin/styles.css (classes renamed per
+   module) so the WebNIC-style accordion resets apply to any accor/grid info
+   panel this module renders. The zone/record UI itself is drawn by the core
+   DNSTemplates_Controller / DNSClient_Controller. */
+.nhanhoa-dns-panel { max-width: 760px; }
+.nhanhoa-dns-action-result { padding: 8px 0; }
+.nhanhoa-dns .sor .row { margin-bottom: 10px; }
+.nhanhoa-dns .btn { margin: 2px 2px 6px 0; }
+ul.accor { list-style: none; margin: 0; padding: 0; }
+ul.accor > li { margin-bottom: 10px; }

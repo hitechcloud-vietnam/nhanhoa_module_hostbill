@@ -41,6 +41,7 @@ class nhanhoa_dns_controller extends DNSTemplates_Controller
     {
         parent::productdetails($params);
         $this->template->assign("custom_template", APPDIR_MODULES . $this->module->getModuleType() . DS . strtolower($this->module->getModuleName()) . DS . "templates" . DS . "appconfig.tpl");
+        $this->template->assign("moduleurl", Utilities::checkSecureURL(HBConfig::getConfig("InstallURL") . "includes/modules/Hosting/nhanhoa_dns/admin/"));
         return true;
     }
 
@@ -60,6 +61,7 @@ class nhanhoa_dns_controller extends DNSTemplates_Controller
         }
         parent::productdetails($params);
         $this->template->assign("customconfig", APPDIR_MODULES . $this->module->getModuleType() . DS . strtolower($this->module->getModuleName()) . DS . "templates" . DS . "productconfig.tpl");
+        $this->template->assign("moduleurl", Utilities::checkSecureURL(HBConfig::getConfig("InstallURL") . "includes/modules/Hosting/nhanhoa_dns/admin/"));
         $this->template->assign("extra_tabs", ["DNS Templates" => MAINDIR . "includes/types/_common/dns_templates.tpl"]);
         return true;
     }

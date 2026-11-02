@@ -1,6 +1,7 @@
 <tr>
     <td></td>
     <td>
+        <link href="{$moduleurl}styles.css" rel="stylesheet" media="all" />
         {literal}
         <style>
             .sectionbody > div{

@@ -7,7 +7,7 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.0.0
+ * @version   1.1.0
  */
 /**
  * HostBill Module Component
@@ -59,7 +59,7 @@ class nhanhoa_dns extends DNSModule implements ReverseDNS, DNSSECModule
      * Module version. Increase on every method change.
      * @var string
      */
-    protected $version = "1.0.0";
+    protected $version = "1.1.0";
 
     protected $_repository = "hosting_nhanhoa_dns";
 
