@@ -53,6 +53,7 @@ class nhanhoa_email_controller extends HBController
         }
 
         $this->template->assign('customconfig', $this->templatePath('adminarea', 'productconfig.tpl'));
+        $this->template->assign('nh_admin_css', $this->adminCssUrl());
         $this->template->assign('nh_codes', $codes);
         $this->template->assign('product_error', $error);
     }
@@ -63,6 +64,7 @@ class nhanhoa_email_controller extends HBController
         $path      = $this->templatePath('adminarea', 'account.tpl');
 
         $this->template->assign('custom_template', $path);
+        $this->template->assign('nh_admin_css', $this->adminCssUrl());
 
         $typetemplates = $this->template->getTemplateVars('typetemplates');
 
@@ -119,6 +121,16 @@ class nhanhoa_email_controller extends HBController
         $this->template->assign('nh_plan_desc', $this->module->planDescription());
         $this->template->assign('nh_panel_url', $this->module->controlPanelUrl());
         $this->template->assign('module_error', (array) $this->module->getLastError());
+    }
+
+    /** Absolute URL to this module's admin stylesheet (WebNIC re-skin). */
+    protected function adminCssUrl()
+    {
+        return Utilities::checkSecureURL(
+            HBConfig::getConfig('InstallURL')
+            . 'includes/modules/Hosting/' . strtolower($this->module->getModuleName())
+            . '/templates/adminarea/styles.css'
+        );
     }
 
     protected function templatePath($area, $file)

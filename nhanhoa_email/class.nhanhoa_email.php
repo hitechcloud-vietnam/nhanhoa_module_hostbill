@@ -34,7 +34,7 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.0.0
+ * @version   1.1.0
  */
 
 if (!defined('MAINDIR')) {
@@ -56,7 +56,7 @@ class nhanhoa_email extends HostingModule
     const D_DOMAIN  = 'option4';
     const D_CODE    = 'option5';
 
-    protected $version = '1.0.0';
+    protected $version = '1.1.0';
 
     protected $modname = 'Nhan Hoa Email Hosting';
 
