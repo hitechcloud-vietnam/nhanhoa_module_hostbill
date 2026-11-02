@@ -28,6 +28,7 @@ Một số thao tác được API đại lý hỗ trợ bất đồng bộ hoặ
 
 ## Tài liệu dùng chung
 
+- [Lịch sử phát hành](CHANGELOG.md)
 - [Thương hiệu và quy tắc ghi nhận](BRAND.md)
 - [Hướng dẫn bảo mật và báo cáo lỗ hổng](SECURITY.md)
 - [Hỗ trợ và thông tin cần cung cấp](SUPPORT.md)
@@ -38,7 +39,7 @@ Một số thao tác được API đại lý hỗ trợ bất đồng bộ hoặ
 Mỗi module được phát hành độc lập dưới dạng ZIP trên GitHub Releases. Bên trong ZIP đã có đường dẫn cài đặt đầy đủ, vì vậy hãy giải nén từ thư mục gốc HostBill:
 
 ```bash
-unzip nhanhoa_cloud-1.0.0.zip -d /path/to/hostbill
+unzip nhanhoa_cloud-1.1.0.zip -d /path/to/hostbill
 ```
 
 Các file sẽ vào `includes/modules/Hosting/nhanhoa_cloud/`. Riêng `nhanhoa_domain` được đặt trong `includes/modules/Domain/nhanhoa_domain/`. Sau đó kích hoạt module trong HostBill như hướng dẫn của từng module.
