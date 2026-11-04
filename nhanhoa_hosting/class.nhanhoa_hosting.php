@@ -35,7 +35,7 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.1.0
+ * @version   1.1.1
  */
 
 if (!defined('MAINDIR')) {
@@ -55,7 +55,7 @@ class nhanhoa_hosting extends HostingModule
     const D_CODE     = 'option5';   // Nhan Hoa service (plan) code
     const D_ORDID    = 'option6';   // Nhan Hoa order id, used by renew/get_info
 
-    protected $version = '1.1.0';
+    protected $version = '1.1.1';
 
     protected $modname = 'Nhân Hòa Hosting';
 
@@ -563,6 +563,35 @@ class nhanhoa_hosting extends HostingModule
     // =================================================================
 
     /**
+     * Admin notice shown when a loadable lookup can't reach the registrar.
+     */
+    protected function apiDownMessage()
+    {
+        return 'Không kết nối được API Nhân Hòa — kiểm tra thông tin API và IP whitelist tại customer.nhanhoa.com.';
+    }
+
+    /**
+     * Degraded return for a loadable <select> whose feed failed: surface the
+     * notice and keep the currently-saved code selectable, so re-saving the
+     * product form during an outage does not wipe the stored value. The admin
+     * page renders immediately instead of hanging on the API.
+     *
+     * @return array<string,string> code => label
+     */
+    protected function loadableFallback($savedValue, $detail = '')
+    {
+        $this->addError('nhanhoa_hosting: ' . ($detail !== '' ? $detail . ' — ' : '') . $this->apiDownMessage());
+
+        $out   = ['' => '⚠ ' . $this->apiDownMessage()];
+        $saved = trim((string) $savedValue);
+        if ($saved !== '') {
+            $out[$saved] = $saved . ' (giá trị đã lưu)';
+        }
+
+        return $out;
+    }
+
+    /**
      * Hosting plan codes — service_code with group_id=1.
      *
      * @return array<string,string> code => label
@@ -572,15 +601,11 @@ class nhanhoa_hosting extends HostingModule
         try {
             $result = $this->get('service_code', ['group_id' => (int) $groupId]);
         } catch (Exception $e) {
-            $this->addError('nhanhoa_hosting: ' . $e->getMessage());
-
-            return [];
+            return $this->loadableFallback($this->hostingCode(), $e->getMessage());
         }
 
         if (!Nhanhoa_hosting_Api::ok($result)) {
-            $this->addError('nhanhoa_hosting: ' . Nhanhoa_hosting_Api::msg($result));
-
-            return [];
+            return $this->loadableFallback($this->hostingCode(), Nhanhoa_hosting_Api::msg($result));
         }
 
         $out  = [];
@@ -617,15 +642,11 @@ class nhanhoa_hosting extends HostingModule
         try {
             $result = $this->get('template_code', ['type' => (int) $type]);
         } catch (Exception $e) {
-            $this->addError('nhanhoa_hosting: ' . $e->getMessage());
-
-            return [];
+            return $this->loadableFallback($this->osTemplate(), $e->getMessage());
         }
 
         if (!Nhanhoa_hosting_Api::ok($result)) {
-            $this->addError('nhanhoa_hosting: ' . Nhanhoa_hosting_Api::msg($result));
-
-            return [];
+            return $this->loadableFallback($this->osTemplate(), Nhanhoa_hosting_Api::msg($result));
         }
 
         $out = [];

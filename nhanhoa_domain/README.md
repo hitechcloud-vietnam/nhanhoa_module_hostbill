@@ -1,5 +1,7 @@
 # nhanhoa_domain
 
+[English](README.md) | [Tiếng Việt](README.vi.md)
+
 Nhan Hoa domain registrar module for HostBill. Successor to `nhanhoav2`;
 both can be installed side by side and they share the contact mirror table
 `hb_domain_contacts_nhanhoa`.
@@ -206,6 +208,9 @@ helper and is intentionally not used by this registrar module.
 
 ## Changelog
 
+* **1.1.1** — Read-only lookups fail fast after recent transport failures;
+  domain-price results preserve successful types when another lookup fails.
+  Admin notices now include connection and IP-whitelist guidance.
 * **1.0.0** — Nhan Hoa Domain registrar module (successor to `nhanhoav2`):
   hardened transport, re-enabled registrant validation, ZoneDNS record
   management, backorder status, unsigned-domain listing, client widgets.
@@ -214,20 +219,14 @@ helper and is intentionally not used by this registrar module.
   defensive `ownerDistrict`); `getAdministrativeDivisions()` gains a legacy
   `ward` level. Backward compatible with stored 3-tier contacts.
 
+## Security, privacy & support
+
+Registrant details, EPP codes, domains, and API responses may be sensitive.
+Follow the repository guidance for [security](../SECURITY.en.md),
+[support](../SUPPORT.en.md), and [brand usage](../BRAND.en.md); sanitize data
+before sharing diagnostics.
+
 ## License & author
 
 MIT — see [`LICENSE`](LICENSE).
 Copyright (c) 2026 **HiTechCloud by Pho Tue SoftWare Solutions JSC**.
-
-## Bảo mật, quyền riêng tư và hỗ trợ
-
-- Chỉ lưu `auth-user`, `auth-pwd`, `auth-id` trong cấu hình module/Server của HostBill. Không đưa thông tin này vào mã nguồn, log gửi hỗ trợ hoặc ảnh chụp.
-- Thông tin tên miền, chủ thể đăng ký, địa chỉ liên hệ, mã xác thực/EPP và dữ liệu DNS có thể là dữ liệu nhạy cảm. Giới hạn quyền truy cập vào HostBill, bảng mirror `hb_domain_contacts_nhanhoa`, thư mục cache tạm và log; chỉ chia sẻ dữ liệu đã ẩn danh khi cần chẩn đoán.
-- Debug log che mật khẩu API nhưng có thể ghi lại dữ liệu yêu cầu/phản hồi khác. Chỉ bật trong thời gian cần thiết, hạn chế quyền đọc và xóa theo chính sách lưu giữ của đơn vị vận hành.
-- Kiểm tra kỹ tỉnh/thành, phường/xã và thông tin chủ thể trước khi đăng ký hoặc cập nhật. Mapping `ownerDistrict` có fallback tương thích được mô tả ở phần địa danh; hành vi chấp nhận của API trực tiếp chưa được xác minh ngoại tuyến, vì vậy cần đối soát với Nhân Hòa và dữ liệu registrant thực tế.
-- Khi lỗi đồng bộ/đăng ký, ghi lại domain, loại thao tác, thời điểm/múi giờ, mã phản hồi đã loại bỏ dữ liệu cá nhân và trạng thái trên portal. Không chia sẻ EPP code, giấy tờ, thông tin chủ thể đầy đủ hoặc thông tin xác thực qua kênh công khai.
-- Tham khảo [hướng dẫn hỗ trợ](../SUPPORT.md) và [báo cáo lỗ hổng](../SECURITY.md). Vấn đề về trạng thái domain, hồ sơ/ủy quyền hoặc API registrar cần được xác minh với Nhân Hòa.
-
-## Thương hiệu và giấy phép
-
-Module thuộc **HiTechCloud Nhan Hoa Suite**; Nhân Hòa và HostBill là nhãn hiệu/tên của chủ sở hữu tương ứng, không hàm ý chứng thực. Xem [quy tắc thương hiệu](../BRAND.md) và [MIT License](LICENSE).

@@ -1,5 +1,7 @@
 # Thương hiệu
 
+[Tiếng Việt](BRAND.md) | [English](BRAND.en.md)
+
 ## Tên bộ sản phẩm
 
 Tên bộ tích hợp: **HiTechCloud Nhan Hoa Suite**.

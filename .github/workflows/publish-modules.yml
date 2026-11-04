@@ -1,4 +1,4 @@
-name: Publish module packages
+name: Publish module packages / Phát hành gói module
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       module:
-        description: Module to package and publish
+        description: Module to package and publish / Module cần đóng gói và phát hành
         required: true
         type: choice
         options:
@@ -18,7 +18,7 @@ on:
           - nhanhoa_hosting
           - nhanhoa_ssl
       version:
-        description: Release version (for example 1.0.0)
+        description: Release version (for example 1.0.0) / Phiên bản phát hành
         required: true
         type: string
 
@@ -96,14 +96,19 @@ jobs:
           notes="$RUNNER_TEMP/release-notes.md"
 
           cat > "$notes" <<EOF
-          ## Install
+          ## Install / Cài đặt
 
           Extract this archive from the HostBill installation root. The ZIP contains the module under its HostBill path.
 
-          SHA-256: see the accompanying \
-          \`$MODULE-$VERSION.zip.sha256\` file.
+          Giải nén gói này từ thư mục gốc của HostBill. ZIP đã chứa module theo đúng đường dẫn cài đặt của HostBill.
+
+          SHA-256 checksum: see the accompanying \`$MODULE-$VERSION.zip.sha256\` file.
+
+          Mã SHA-256: xem tệp \`$MODULE-$VERSION.zip.sha256\` đi kèm.
 
           See the module README inside the archive for configuration and provider API limitations.
+
+          Xem README của module trong gói để biết cách cấu hình và các giới hạn của API nhà cung cấp.
           EOF
 
           if gh release view "$TAG" --repo "$REPOSITORY" >/dev/null 2>&1; then

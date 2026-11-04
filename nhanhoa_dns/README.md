@@ -1,5 +1,7 @@
 # nhanhoa_dns
 
+[English](README.md) | [Tiếng Việt](README.vi.md)
+
 Nhan Hoa (Nhân Hòa) **ZoneDNS** module for HostBill. A greenfield `DNSModule`
 built on the Nhan Hoa reseller ZoneDNS API (<https://api.nhanhoa.com/>,
 documented at <https://docs.nhanhoa.com/zonedns.md>), modelled on the
@@ -107,24 +109,21 @@ The ZoneDNS API is **record-only**. It has **no** command for:
 
 ## Changelog
 
+* **1.1.1** — Standardized the module version and added Vietnamese documentation;
+  no provider API behavior changes.
 * **1.0.0** — Nhan Hoa ZoneDNS module: full record management, admin + client
   controllers, templates, REST routes; `ReverseDNS` / `DNSSECModule` implemented
   as gracefully unsupported. This pass adds LICENSE, standardized author headers
   and this README.
 
+## Security, privacy & support
+
+Follow the repository guidance for [security](../SECURITY.en.md),
+[support](../SUPPORT.en.md), and [brand usage](../BRAND.en.md). API logs may
+contain domain names and DNS values; restrict access and sanitize diagnostic
+output before sharing it.
+
 ## License & author
 
 MIT — see [`LICENSE`](LICENSE).
 Copyright (c) 2026 **HiTechCloud by Pho Tue SoftWare Solutions JSC**.
-
-## Security, privacy & support
-
-- Store `auth-user`, `auth-pwd` and `auth-id` only in the HostBill Server/App connection. Do not publish credentials or include them in screenshots or tickets.
-- Debug logging is opt-in and masks the API password, but request/response content can include domain names and DNS values. Restrict log access, enable it only for diagnosis and remove retained logs under your policy.
-- The REST routes require authentication and re-check service ownership. Review the HostBill User API exposure and service ownership configuration before enabling client access.
-- Check Test connection and confirm the domain is available to the reseller account. TTL is constrained to 300–86400 seconds; record renaming is handled as delete plus add. The provider API does not create/delete zones and does not provide reverse DNS or DNSSEC.
-- Before reporting a record issue, include the record type, sanitized name/value, requested TTL, timestamp and redacted API response. Never share credentials or private customer data. See [support](../SUPPORT.md) and [security reporting](../SECURITY.md).
-
-## Brand & license
-
-This module belongs to **HiTechCloud Nhan Hoa Suite**. Nhân Hòa and HostBill names belong to their respective owners; no endorsement is implied. See [brand guidance](../BRAND.md) and the [MIT license](LICENSE).

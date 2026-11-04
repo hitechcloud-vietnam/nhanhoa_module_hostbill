@@ -18,7 +18,7 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.0.2026-11-02
+ * @version   1.1.1
  */
 
 if (!defined('MAINDIR')) {
@@ -29,8 +29,24 @@ class Nhanhoa_Cloud_Api
 {
     const BASE_URL = 'https://api.nhanhoa.com/';
 
-    /** Nhan Hoa answers well inside a minute. */
-    const TIMEOUT = 60;
+    /**
+     * Interactive overall timeout. Lowered from 60s: a loadable admin select that
+     * blocks must not hold the product/admin page open for a whole minute.
+     */
+    const TIMEOUT = 30;
+
+    /** Connect timeout, kept short so an un-whitelisted/firewalled IP fails fast. */
+    const CONNECT_TIMEOUT = 10;
+
+    /**
+     * After a transport-level failure (connect timeout, HTTP >= 400, or an
+     * unparseable body) skip the network for this long on read-only lookups, so a
+     * string of admin renders doesn't each wait out another full connect-timeout.
+     */
+    const NEG_CACHE_TTL = 45;
+
+    /** Shown when a read-only lookup is short-circuited by the negative cache. */
+    const DOWN_MSG = 'Không kết nối được API Nhân Hòa — kiểm tra thông tin API và IP whitelist tại customer.nhanhoa.com.';
 
     /**
      * Nhan Hoa throttles: repeat a lookup too quickly and every command comes
@@ -100,6 +116,13 @@ class Nhanhoa_Cloud_Api
             return $cached;
         }
 
+        // A recent transport failure: on a read-only lookup (the ones the admin
+        // page fires on render) fail fast instead of waiting out the connect
+        // timeout again. Write/provisioning commands still attempt the network.
+        if ($cacheKey !== null && $this->negCacheActive()) {
+            return $this->fail(self::DOWN_MSG);
+        }
+
         $postfields['auth-user'] = $this->user;
         $postfields['auth-pwd']  = $this->password;
         $postfields['auth-id']   = $this->id;
@@ -114,7 +137,8 @@ class Nhanhoa_Cloud_Api
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER         => false,
             CURLOPT_TIMEOUT        => self::TIMEOUT,
-            CURLOPT_CONNECTTIMEOUT => 15,
+            CURLOPT_CONNECTTIMEOUT => self::CONNECT_TIMEOUT,
+            CURLOPT_NOSIGNAL       => 1,
             CURLOPT_USERAGENT      => 'HostBill nhanhoa_cloud',
         ]);
 
@@ -128,22 +152,77 @@ class Nhanhoa_Cloud_Api
         $this->log($cmd, $formdata, $this->lastRaw, $errno ? $error : null);
 
         if ($errno) {
+            $this->negCacheMark();
             return $this->fail('Lỗi kết nối tới API Nhân Hòa: ' . $error);
         }
 
         if ($code >= 400) {
+            $this->negCacheMark();
             return $this->fail('API Nhân Hòa trả về HTTP ' . $code . '.');
         }
 
         $decoded = $this->decode($body);
         if ($decoded === null) {
+            $this->negCacheMark();
             return $this->fail('Phản hồi từ API không phải JSON hợp lệ.');
         }
+
+        // The endpoint answered and parsed: it is reachable, so lift any
+        // negative-cache marker even when the app-level status is an error.
+        $this->negCacheClear();
 
         $result = $this->normalize($decoded);
         $this->cachePut($cacheKey, $result);
 
         return $result;
+    }
+
+    /**
+     * Negative cache ("transport is down") marker, scoped to this reseller id.
+     *
+     * Uses HostBill's HBCache when present; otherwise a temp-file flag, so the
+     * transport stays usable from a standalone CLI probe. Only read-only lookups
+     * consult it (see call()), which is exactly where a stalled admin render hurts.
+     */
+    protected function negCacheId()
+    {
+        return 'nhanhoa_cloud_down_' . sha1($this->id);
+    }
+
+    protected function negCacheFlag()
+    {
+        return sys_get_temp_dir() . DIRECTORY_SEPARATOR . $this->negCacheId() . '.flag';
+    }
+
+    protected function negCacheActive()
+    {
+        if (class_exists('HBCache')) {
+            return (bool) HBCache::get($this->negCacheId());
+        }
+
+        $f = $this->negCacheFlag();
+
+        return is_file($f) && (time() - filemtime($f)) <= self::NEG_CACHE_TTL;
+    }
+
+    protected function negCacheMark()
+    {
+        if (class_exists('HBCache')) {
+            @HBCache::set($this->negCacheId(), 1, self::NEG_CACHE_TTL);
+            return;
+        }
+
+        @file_put_contents($this->negCacheFlag(), '1', LOCK_EX);
+    }
+
+    protected function negCacheClear()
+    {
+        if (class_exists('HBCache')) {
+            @HBCache::set($this->negCacheId(), 0, 1);
+            return;
+        }
+
+        @unlink($this->negCacheFlag());
     }
 
     /** True when this response is the API's throttle notice. */

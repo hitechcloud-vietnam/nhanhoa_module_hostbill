@@ -7,7 +7,7 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.1.0
+ * @version   1.1.1
  */
 
 /**
@@ -79,7 +79,7 @@ class nhanhoa_domain extends DomainModule implements
     /** TTL Nhan Hoa applies when a record does not carry one. */
     const DEFAULT_TTL = 300;
 
-    protected $version = '1.1.0';
+    protected $version = '1.1.1';
 
     protected $modname = 'Nhan Hoa Domain';
 
@@ -1494,6 +1494,19 @@ class nhanhoa_domain extends DomainModule implements
         return $rows;
     }
 
+    /**
+     * Append the IP-whitelist hint to a transport error so an admin opening a
+     * pricing / địa-danh panel sees why the registrar is silent, rather than a
+     * frozen page. The transport already fails fast (short connect timeout +
+     * negative cache), so these panels degrade instead of hanging.
+     */
+    protected function apiDownNotice($detail = '')
+    {
+        $notice = 'Không kết nối được API Nhân Hòa — kiểm tra thông tin API và IP whitelist tại customer.nhanhoa.com.';
+
+        return $detail !== '' ? $detail . ' — ' . $notice : $notice;
+    }
+
     public function getDomainPrices()
     {
         $domains = [];
@@ -1517,7 +1530,9 @@ class nhanhoa_domain extends DomainModule implements
         foreach ([1, 2] as $type) {
             $result = $this->get('domain_pricing', ['type' => $type]);
             if (!Nhanhoa_Domain_Api::ok($result)) {
-                $this->addError(Nhanhoa_Domain_Api::msg($result));
+                // Keep whatever prices earlier types returned (an empty/partial
+                // cached list) rather than aborting the whole panel.
+                $this->addError($this->apiDownNotice(Nhanhoa_Domain_Api::msg($result)));
                 continue;
             }
 
@@ -1975,8 +1990,10 @@ class nhanhoa_domain extends DomainModule implements
         $result = $this->get($spec['cmd'], $formdata);
 
         if (!Nhanhoa_Domain_Api::ok($result)) {
-            $this->addError(Nhanhoa_Domain_Api::msg($result));
-            return false;
+            // Degrade to an empty list with a clear notice so the admin page
+            // renders instead of hanging on an unreachable registrar.
+            $this->addError($this->apiDownNotice(Nhanhoa_Domain_Api::msg($result)));
+            return [];
         }
 
         return (array) ($result['data'] ?? []);

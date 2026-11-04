@@ -1,5 +1,7 @@
 # nhanhoa_email — Nhan Hoa Email Hosting (HostBill Hosting module)
 
+[English](README.md) | [Tiếng Việt](README.vi.md)
+
 Resells Nhan Hoa (Nhân Hòa) **Email Hosting** through the reseller API at
 `https://api.nhanhoa.com/`. This is a provisioning module, **not** a control-panel
 module: Nhan Hoa runs the mail platform, HostBill sends provisioning intents and
@@ -118,23 +120,20 @@ lapses at `ord_end_time`).
 
 ## Changelog
 
+- **1.1.1** — Read-only lookups fail fast after a recent transport failure;
+  failed plan-list loads retain the saved selection and show an actionable warning.
 - **1.0.0** — Initial release: register/renew/sync email-hosting orders, loadable
   plan list, admin + client UI, daily sync cron, read-only REST routes, `get_balance`
   / `service_used` helpers and the service-summary widget. MIT license + author
   headers added.
 
+## Security, privacy & support
+
+Follow the repository guidance for [security](../SECURITY.en.md),
+[support](../SUPPORT.en.md), and [brand usage](../BRAND.en.md). Logs can contain
+domains, order identifiers, and provider responses; restrict access and sanitize
+diagnostics before sharing them.
+
 ## License & author
 
 MIT — see `LICENSE`. © 2026 **HiTechCloud by Pho Tue SoftWare Solutions JSC**.
-
-## Security, privacy & support
-
-- Keep the reseller username, API password and reseller ID in the HostBill Server/App fields. Never include these values, mailbox passwords or customer data in a public report.
-- Debug logging masks the API password but may contain domains, order identifiers and provider responses. Enable it temporarily, restrict access and remove logs when troubleshooting is complete.
-- Confirm the product code and a term of at least 6 months. `register_email` may require a later sync before the order ID/status is populated; verify the order with the provider before taking billing or lifecycle action.
-- The daily sync task depends on HostBill cron (`bin/cron.php`). If status or expiry stops refreshing, check that cron runs, review the task result and verify API availability. The API does not manage mailboxes, suspend mail service, change passwords or perform termination; use the Nhân Hòa panel for those actions.
-- When asking for help, include module/HostBill/PHP versions, sanitized order/domain identifiers, cron timestamp and redacted error output. Follow [support](../SUPPORT.md) and [security reporting](../SECURITY.md); use the provider's channel for mailbox or upstream order issues.
-
-## Brand & license
-
-This module is part of **HiTechCloud Nhan Hoa Suite**. Nhân Hòa and HostBill are third-party names/trademarks; no endorsement is implied. See [brand guidance](../BRAND.md) and the [MIT license](LICENSE).

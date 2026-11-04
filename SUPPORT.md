@@ -1,5 +1,7 @@
 # Hỗ trợ
 
+[Tiếng Việt](SUPPORT.md) | [English](SUPPORT.en.md)
+
 ## Phạm vi
 
 Hỗ trợ repository tập trung vào cài đặt, cấu hình và hành vi của sáu module được liệt kê trong [README](README.md). Hỗ trợ không mặc nhiên bao gồm tài khoản/hoá đơn Nhân Hòa, tình trạng hạ tầng hay API của nhà cung cấp, lỗi lõi HostBill, cấu hình máy chủ PHP hoặc dịch vụ bên ngoài.

@@ -34,7 +34,7 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.1.0
+ * @version   1.1.1
  */
 
 if (!defined('MAINDIR')) {
@@ -56,7 +56,7 @@ class nhanhoa_email extends HostingModule
     const D_DOMAIN  = 'option4';
     const D_CODE    = 'option5';
 
-    protected $version = '1.1.0';
+    protected $version = '1.1.1';
 
     protected $modname = 'Nhan Hoa Email Hosting';
 
@@ -667,21 +667,56 @@ class nhanhoa_email extends HostingModule
         return 'https://customer.nhanhoa.com';
     }
 
+    /** Admin notice shown when a loadable lookup can't reach the registrar. */
+    protected function apiDownMessage()
+    {
+        return 'Không kết nối được API Nhân Hòa — kiểm tra thông tin API và IP whitelist tại customer.nhanhoa.com.';
+    }
+
+    /**
+     * Degraded return for the plan-code <select> when its feed failed: surface
+     * the notice and keep the currently-saved code selectable so re-saving the
+     * product form during an outage does not wipe it. The admin page renders
+     * immediately instead of hanging on the API. Shape matches the loadable
+     * contract: a list of [value, label] pairs.
+     */
+    protected function loadableFallback($detail = '')
+    {
+        $this->addError('nhanhoa_email: ' . ($detail !== '' ? $detail . ' — ' : '') . $this->apiDownMessage());
+
+        $ret   = [['', '⚠ ' . $this->apiDownMessage()]];
+        $saved = trim((string) $this->optionValue('serviceCode', ''));
+        if ($saved !== '') {
+            $ret[] = [$saved, $saved . ' (giá trị đã lưu)'];
+        }
+
+        return $ret;
+    }
+
     /** Loadable option provider: [code, label] pairs from service_code group 2. */
     public function loadServiceCodes()
     {
-        $ret = [];
-
         try {
-            foreach ($this->api()->serviceCodes(2) as $row) {
-                if (empty($row['service_code'])) {
-                    continue;
-                }
-
-                $ret[] = [$row['service_code'], $row['service_code']];
-            }
+            $api = $this->api();
         } catch (Exception $e) {
-            Engine::addError('nhanhoa_email: ' . $e->getMessage());
+            return $this->loadableFallback($e->getMessage());
+        }
+
+        // Probe once so a transport failure is distinguishable from an empty but
+        // successful list; serviceCodes() below is then served from the throttle
+        // cache, so this costs no extra round-trip on the happy path.
+        $probe = $api->call('service_code', ['group_id' => 2]);
+        if (!Nhanhoa_Email_Api::ok($probe)) {
+            return $this->loadableFallback(Nhanhoa_Email_Api::msg($probe));
+        }
+
+        $ret = [];
+        foreach ($api->serviceCodes(2) as $row) {
+            if (empty($row['service_code'])) {
+                continue;
+            }
+
+            $ret[] = [$row['service_code'], $row['service_code']];
         }
 
         return $ret;

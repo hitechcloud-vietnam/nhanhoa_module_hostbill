@@ -1,5 +1,7 @@
 # Bảo mật
 
+[Tiếng Việt](SECURITY.md) | [English](SECURITY.en.md)
+
 Tài liệu này đưa ra cách cấu hình và báo cáo vấn đề bảo mật cho HiTechCloud Nhan Hoa Suite. Nó không phải cam kết rằng tích hợp, HostBill, máy chủ hay API của bên thứ ba đã được kiểm thử bảo mật độc lập.
 
 ## Cấu hình an toàn

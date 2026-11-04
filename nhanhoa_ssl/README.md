@@ -1,5 +1,7 @@
 # nhanhoa_ssl
 
+[English](README.md) | [Tiếng Việt](README.vi.md)
+
 Nhan Hoa (Nhân Hòa) **SSL provisioning** module for HostBill. Implements the
 HostBill `SSLModule` contract against the Nhan Hoa reseller API
 (<https://api.nhanhoa.com/>, documented at <https://docs.nhanhoa.com/>).
@@ -121,24 +123,20 @@ pending confirmation from Nhan Hoa.
 
 ## Changelog
 
+* **1.1.1** — Standardized the module version and added Vietnamese documentation;
+  no provider API behavior changes.
 * **1.0.0** — Nhan Hoa SSL provisioning module: order / sync / renew, product
   list, status mapping, REST routes. This pass adds the admin management UI
   (controller + service-page template + `CertDetails()`), LICENSE, standardized
   author headers and this README.
 
+## Security, privacy & support
+
+Follow the repository guidance for [security](../SECURITY.en.md),
+[support](../SUPPORT.en.md), and [brand usage](../BRAND.en.md). Never share
+private keys, credentials, or customer data in public diagnostics.
+
 ## License & author
 
 MIT — see [`LICENSE`](LICENSE).
 Copyright (c) 2026 **HiTechCloud by Pho Tue SoftWare Solutions JSC**.
-
-## Security, privacy & support
-
-- Store reseller credentials only in HostBill Server/App configuration. Treat CSR, SAN/domain lists, certificate/order identifiers and customer contact information as sensitive; never send a private key or unredacted customer data in a ticket.
-- Debug logging masks the API password but can contain other request/response data. Restrict access, enable only for diagnosis and remove logs under your retention policy.
-- Confirm the SSL service code and domain list before ordering. The module's documented API can order, renew and synchronize only; CSR/DCV, reissue, cancellation/refund and certificate download are handled through the Nhân Hòa portal or its documented workflow.
-- SAN values are sent as a comma-separated `domainNameList` based on the current API interpretation; verify this format with the provider before relying on multi-domain orders. Confirm issuance and expiry with the portal before promising delivery.
-- For a support report, include module/HostBill/PHP versions, sanitized service code/domain, action/time and redacted response. Follow [support](../SUPPORT.md) and [security reporting](../SECURITY.md); report certificate issuance or validation issues to Nhân Hòa as appropriate.
-
-## Brand & license
-
-This module is part of **HiTechCloud Nhan Hoa Suite**. Nhân Hòa and HostBill names/trademarks remain with their respective owners; no official endorsement is implied. See [brand guidance](../BRAND.md) and the [MIT license](LICENSE).

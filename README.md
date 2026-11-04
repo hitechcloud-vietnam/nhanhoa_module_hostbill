@@ -1,17 +1,19 @@
 # Bộ tích hợp Nhân Hòa cho HostBill
 
+[English](README.en.md) | Tiếng Việt
+
 Bộ module kết nối HostBill với các dịch vụ của Nhân Hòa, được phát hành dưới tên **HiTechCloud Nhan Hoa Suite**. Các module giao tiếp với API đại lý của nhà cung cấp; HostBill không thay thế control panel, hệ thống DNS authoritative, nền tảng email, hạ tầng VPS hoặc quy trình nghiệp vụ của Nhân Hòa.
 
 ## Danh mục module
 
 | Module | Phạm vi | Tài liệu triển khai |
 |---|---|---|
-| `nhanhoa_cloud` | Đặt hàng, đồng bộ và gia hạn Cloud VPS | [README](nhanhoa_cloud/README.md) · [MIT](nhanhoa_cloud/LICENSE) |
-| `nhanhoa_dns` | Quản lý bản ghi ZoneDNS | [README](nhanhoa_dns/README.md) · [MIT](nhanhoa_dns/LICENSE) |
-| `nhanhoa_domain` | Đăng ký và quản lý tên miền, thông tin chủ thể và DNS | [README](nhanhoa_domain/README.md) · [MIT](nhanhoa_domain/LICENSE) |
-| `nhanhoa_email` | Đặt hàng, đồng bộ và gia hạn Email Hosting | [README](nhanhoa_email/README.md) · [MIT](nhanhoa_email/LICENSE) |
-| `nhanhoa_hosting` | Đặt hàng, đồng bộ và gia hạn Hosting | [README](nhanhoa_hosting/README.md) · [MIT](nhanhoa_hosting/LICENSE) |
-| `nhanhoa_ssl` | Đặt hàng, đồng bộ và gia hạn chứng chỉ SSL | [README](nhanhoa_ssl/README.md) · [MIT](nhanhoa_ssl/LICENSE) |
+| `nhanhoa_cloud` | Đặt hàng, đồng bộ và gia hạn Cloud VPS | [English](nhanhoa_cloud/README.md) · [Tiếng Việt](nhanhoa_cloud/README.vi.md) · [MIT](nhanhoa_cloud/LICENSE) |
+| `nhanhoa_dns` | Quản lý bản ghi ZoneDNS | [English](nhanhoa_dns/README.md) · [Tiếng Việt](nhanhoa_dns/README.vi.md) · [MIT](nhanhoa_dns/LICENSE) |
+| `nhanhoa_domain` | Đăng ký và quản lý tên miền, thông tin chủ thể và DNS | [English](nhanhoa_domain/README.md) · [Tiếng Việt](nhanhoa_domain/README.vi.md) · [MIT](nhanhoa_domain/LICENSE) |
+| `nhanhoa_email` | Đặt hàng, đồng bộ và gia hạn Email Hosting | [English](nhanhoa_email/README.md) · [Tiếng Việt](nhanhoa_email/README.vi.md) · [MIT](nhanhoa_email/LICENSE) |
+| `nhanhoa_hosting` | Đặt hàng, đồng bộ và gia hạn Hosting | [English](nhanhoa_hosting/README.md) · [Tiếng Việt](nhanhoa_hosting/README.vi.md) · [MIT](nhanhoa_hosting/LICENSE) |
+| `nhanhoa_ssl` | Đặt hàng, đồng bộ và gia hạn chứng chỉ SSL | [English](nhanhoa_ssl/README.md) · [Tiếng Việt](nhanhoa_ssl/README.vi.md) · [MIT](nhanhoa_ssl/LICENSE) |
 
 Mỗi module có hướng dẫn cài đặt, cấu hình API, giới hạn dịch vụ và giấy phép riêng. Thực hiện theo README của đúng module; không suy luận rằng các module có cùng danh mục HostBill, cùng trường cấu hình hoặc cùng khả năng của API.
 
@@ -29,9 +31,9 @@ Một số thao tác được API đại lý hỗ trợ bất đồng bộ hoặ
 ## Tài liệu dùng chung
 
 - [Lịch sử phát hành](CHANGELOG.md)
-- [Thương hiệu và quy tắc ghi nhận](BRAND.md)
-- [Hướng dẫn bảo mật và báo cáo lỗ hổng](SECURITY.md)
-- [Hỗ trợ và thông tin cần cung cấp](SUPPORT.md)
+- [Thương hiệu và quy tắc ghi nhận](BRAND.md) · [English](BRAND.en.md)
+- [Hướng dẫn bảo mật và báo cáo lỗ hổng](SECURITY.md) · [English](SECURITY.en.md)
+- [Hỗ trợ và thông tin cần cung cấp](SUPPORT.md) · [English](SUPPORT.en.md)
 - [Giấy phép MIT của repository](LICENSE)
 
 ## Đóng gói và phát hành
@@ -39,7 +41,7 @@ Một số thao tác được API đại lý hỗ trợ bất đồng bộ hoặ
 Mỗi module được phát hành độc lập dưới dạng ZIP trên GitHub Releases. Bên trong ZIP đã có đường dẫn cài đặt đầy đủ, vì vậy hãy giải nén từ thư mục gốc HostBill:
 
 ```bash
-unzip nhanhoa_cloud-1.1.0.zip -d /path/to/hostbill
+unzip nhanhoa_cloud-1.1.1.zip -d /path/to/hostbill
 ```
 
 Các file sẽ vào `includes/modules/Hosting/nhanhoa_cloud/`. Riêng `nhanhoa_domain` được đặt trong `includes/modules/Domain/nhanhoa_domain/`. Sau đó kích hoạt module trong HostBill như hướng dẫn của từng module.

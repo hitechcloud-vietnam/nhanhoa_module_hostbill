@@ -1,5 +1,7 @@
 # Nhân Hòa Hosting (nhanhoa_hosting)
 
+[English](README.md) | [Tiếng Việt](README.vi.md)
+
 HostBill **Hosting** provisioning module that resells hosting through the Nhân Hòa
 reseller API (`https://api.nhanhoa.com/`). HostBill does not manage any hosting
 server itself — it places and tracks hosting **orders** in Nhân Hòa's inventory.
@@ -128,22 +130,20 @@ they only update HostBill and raise a notice to act manually at
 
 ## Changelog
 
+- **1.1.1** — Failed loadable-list requests preserve the saved option and display
+  an actionable API-connection warning; read-only lookups fail fast after a
+  recent transport failure.
 - **1.0.0** — Initial release: provision/renew/sync hosting orders, loadable plan &
   template lists, admin + client UI, read-only REST routes, `service_used` reporting
   helper and the service-summary widget. MIT license + author headers added.
 
+## Security, privacy & support
+
+Follow the repository guidance for [security](../SECURITY.en.md),
+[support](../SUPPORT.en.md), and [brand usage](../BRAND.en.md). Logs may contain
+domains, order identifiers, and API responses; restrict access and sanitize
+diagnostic output before sharing it.
+
 ## License & author
 
 MIT — see `LICENSE`. © 2026 **HiTechCloud by Pho Tue SoftWare Solutions JSC**.
-
-## Security, privacy & support
-
-- Store `auth-user`, `auth-pwd` and `auth-id` in the HostBill Server/App configuration. Do not paste credentials into tickets, screenshots or product fields.
-- Debug logging masks the API password but may record domain names, order IDs and API responses. Restrict access, enable only while diagnosing and remove logs according to your retention policy.
-- Check Test connection and confirm the hosting plan and a term of at least 6 months. Registration is asynchronous; use **Đồng bộ** after the provider has processed the order if its identifier is not immediately available.
-- If client status/expiry differs, compare the latest `get_infohosting` result with the Nhân Hòa portal. Suspend, unsuspend, terminate, change plan/password and control-panel actions are not executed upstream by this API; follow the manual provider workflow.
-- For support, provide module/HostBill/PHP versions, sanitized domain/order reference, action and timestamp, and redacted error output. Never send reseller secrets. See [support](../SUPPORT.md) and [security reporting](../SECURITY.md).
-
-## Brand & license
-
-This module belongs to **HiTechCloud Nhan Hoa Suite**. Nhân Hòa and HostBill remain names/trademarks of their owners; this integration does not claim endorsement. See [brand guidance](../BRAND.md) and the [MIT license](LICENSE).

@@ -1,5 +1,7 @@
 # Nhân Hòa Cloud VPS (nhanhoa_cloud)
 
+[English](README.md) | [Tiếng Việt](README.vi.md)
+
 HostBill **Hosting** provisioning module that resells **Cloud VPS** through the
 Nhân Hòa reseller API (`https://api.nhanhoa.com/`). HostBill does not run any
 hypervisor — it places and tracks Cloud VPS **orders** in Nhân Hòa's inventory and
@@ -133,25 +135,21 @@ LICENSE                                        MIT
 
 ## Changelog
 
+- **1.1.1** — Read-only lookups fail fast after a recent transport failure; failed
+  product-list loads retain the saved selection and show an actionable warning.
 - **1.0.2026-11-02** — Initial release: register/renew/sync Cloud VPS orders,
   loadable plan & OS-template lists, admin + client UI with panel deep links,
   client control routes (power/reinstall/console as panel-managed notices),
   `get_balance` / `service_used` helpers and the service-summary widget. MIT license
   + author headers added.
 
+## Security, privacy & support
+
+Follow the repository guidance for [security](../SECURITY.en.md),
+[support](../SUPPORT.en.md), and [brand usage](../BRAND.en.md). API logs and
+service identifiers may contain sensitive data; restrict access and sanitize
+diagnostic output before sharing it.
+
 ## License & author
 
 MIT — see `LICENSE`. © 2026 **HiTechCloud by Pho Tue SoftWare Solutions JSC**.
-
-## Security, privacy & support
-
-- Keep `auth-user`, `auth-pwd` and `auth-id` in the HostBill Server/App configuration; never put them in product descriptions, support screenshots or public logs.
-- The optional API debug log masks credentials, but request/response data may still contain service identifiers, IP addresses or customer data. Enable it only while diagnosing, restrict file access and remove it according to your retention policy.
-- Client REST handlers require authentication and verify that the requesting client owns the service. They return a limited service summary rather than reseller credentials.
-- Check **Test connection** first. If creation returns before `cloud_id` is available, use **Sync status** after Nhân Hòa has completed order processing; this lookup is best-effort. Confirm the final order in the Nhân Hòa portal.
-- Verify `vpscode`, OS type/template and a term of at least 3 months. Power, reinstall, console, suspend, terminate and resize/password changes are not performed by this API; use the provider panel where available.
-- For an issue, include module/HostBill/PHP versions, the sanitized action and timestamp, product option names, and redacted error text. Do not send reseller credentials or customer secrets. General reporting and escalation guidance: [repository support](../SUPPORT.md) and [security reporting](../SECURITY.md).
-
-## Brand & license
-
-This module is part of **HiTechCloud Nhan Hoa Suite**, maintained under the attribution shown above. Nhân Hòa and HostBill are respective third-party names/trademarks; this integration does not imply endorsement. See [brand guidance](../BRAND.md) and the [MIT license](LICENSE).

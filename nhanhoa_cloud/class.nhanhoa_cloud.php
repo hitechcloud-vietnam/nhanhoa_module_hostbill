@@ -37,14 +37,14 @@
  * @author    HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @copyright 2026 HiTechCloud by Pho Tue SoftWare Solutions JSC
  * @license   MIT
- * @version   1.1.0
+ * @version   1.1.1
  */
 
 #[\AllowDynamicProperties]
 class nhanhoa_cloud extends HostingModule
 {
     protected $_repository = "hosting_nhanhoa_cloud";
-    protected $version     = "1.1.0";
+    protected $version     = "1.1.1";
     protected $modname     = "Nhan Hoa Cloud VPS";
     protected $description = "Nhân Hòa Cloud VPS provisioning (reseller API)";
 
@@ -235,11 +235,36 @@ class nhanhoa_cloud extends HostingModule
      * code => label for a <select>. On failure returns [] so the config form
      * falls back to a free-text field, per HostBill's loadable convention.
      */
+    /** Admin notice shown when a loadable lookup can't reach the registrar. */
+    protected function apiDownMessage()
+    {
+        return "Không kết nối được API Nhân Hòa — kiểm tra thông tin API và IP whitelist tại customer.nhanhoa.com.";
+    }
+
+    /**
+     * Degraded return for a loadable <select> whose feed failed: surface the
+     * notice and keep the currently-saved value selectable, so re-saving the
+     * product form during an outage does not wipe it. The admin page renders
+     * immediately instead of hanging on the API. Returns a code => label map.
+     */
+    protected function loadableFallback($savedValue, $detail = "")
+    {
+        $this->addError("nhanhoa_cloud: " . ($detail !== "" ? $detail . " — " : "") . $this->apiDownMessage());
+
+        $out   = ["" => "⚠ " . $this->apiDownMessage()];
+        $saved = trim((string) $savedValue);
+        if ($saved !== "") {
+            $out[$saved] = $saved . " (giá trị đã lưu)";
+        }
+
+        return $out;
+    }
+
     public function getVpsPlans($product_id = false, $clientarea = false)
     {
         $res = $this->api()->call("service_code", ["group_id" => "3"]);
         if (!Nhanhoa_Cloud_Api::ok($res)) {
-            return [];
+            return $this->loadableFallback($this->resource("vpscode"), Nhanhoa_Cloud_Api::msg($res));
         }
 
         $rows = $this->rowsFrom($res);
@@ -275,7 +300,7 @@ class nhanhoa_cloud extends HostingModule
 
         $res = $this->api()->call("template_code", ["type" => $type]);
         if (!Nhanhoa_Cloud_Api::ok($res)) {
-            return [];
+            return $this->loadableFallback($this->resource("ostemplate"), Nhanhoa_Cloud_Api::msg($res));
         }
 
         $rows = $this->rowsFrom($res);
